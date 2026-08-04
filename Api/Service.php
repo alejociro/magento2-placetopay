@@ -21,7 +21,7 @@ use PlacetoPay\Payments\Model\PaymentMethod;
 
 class Service implements ServiceInterface
 {
-    private const ALLOWED_SIGNATURE_ALGORITHMS = ['sha1', 'sha256', 'sha512'];
+    private const ALLOWED_SIGNATURE_ALGORITHMS = ['sha1', 'sha256'];
 
     /**
      * @var Request
@@ -133,11 +133,13 @@ class Service implements ServiceInterface
                 ];
             }
 
-            if (!hash_equals(hash($algo, $expectedSignature), $receivedSignature)) {
+            $hash = hash($algo, $expectedSignature);
+
+            if (!hash_equals($hash, $receivedSignature)) {
                 if ($this->inDevelopmentMode($order)) {
                     return [
                         'message' => 'Replace this signature with the one on the request body for testing.',
-                        'signature' => hash($algo, $expectedSignature),
+                        'signature' => $hash,
                     ];
                 }
 
