@@ -286,7 +286,7 @@ class Response extends Action
 
     private function restoreQuote(Session $session, Order $order): void
     {
-        if (!RestoreQuoteAction::execute($session, $order)) {
+        if (!RestoreQuoteAction::execute($session, $this->customerSession, $order)) {
             return;
         }
 
